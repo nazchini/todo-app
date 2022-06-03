@@ -22,6 +22,12 @@ const addTodo = () => {
   input_category.value = null;
 };
 
+const todos_asc = computed(() =>
+  todos.value.sort((a, b) => {
+    return b.createdAt - a.createdAt;
+  })
+);
+
 watch(name, (newVal) => {
   localStorage.setItem("name", newVal);
 });
@@ -89,6 +95,30 @@ onMounted(() => {
 
         <input type="submit" value="Add todo" />
       </form>
+    </section>
+
+    <section class="todo-list">
+      <h3>TODO LIST</h3>
+      <div class="list" id="todo-list">
+        <div
+          v-for="todo in todos_asc"
+          :class="`todo-item ${todo.done && 'done'}`"
+          :key="todo.id"
+        >
+          <label>
+            <input type="checkbox" v-model="todo.done" />
+            <span :class="`bubble ${todo.category}`"></span>
+          </label>
+
+          <div class="todo-content">
+            <input type="text" v-model="todo.content" />
+          </div>
+
+          <div class="actions">
+            <button class="delete" @click="removeTodo(todo)">Delete</button>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 </template>
