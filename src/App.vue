@@ -22,6 +22,20 @@ const addTodo = () => {
   input_category.value = null;
 };
 
+watch(name, (newVal) => {
+  localStorage.setItem("name", newVal);
+});
+
+watch(
+  todos,
+  (newVal) => {
+    localStorage.setItem("todos", JSON.stringify(newVal));
+  },
+  {
+    deep: true,
+  }
+);
+
 onMounted(() => {
   name.value = localStorage.getItem("name") || "";
   todos.value = JSON.parse(localStorage.getItem("todos")) || [];
